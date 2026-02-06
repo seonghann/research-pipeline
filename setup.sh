@@ -71,8 +71,9 @@ install_global() {
     echo "  MCP servers:  arxiv, wandb, context7"
     echo ""
     echo "  MCP setup:"
-    echo "    uv tool install arxiv-mcp-server"
-    echo "    export WANDB_API_KEY='your-key'  (add to ~/.bashrc)"
+    echo "    uv tool install arxiv-mcp-server   (or uvx auto-fetches)"
+    echo "    export WANDB_API_KEY='your-key'    (add to ~/.bashrc)"
+    echo "    wandb: uvx auto-fetches from GitHub (no manual install needed)"
     echo ""
 }
 

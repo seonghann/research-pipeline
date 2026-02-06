@@ -4,7 +4,7 @@
   "_install": [
     "1. arxiv:      uv tool install arxiv-mcp-server",
     "2. context7:   npx auto-fetches (no install)",
-    "3. wandb:      uvx auto-fetches (no install, needs WANDB_API_KEY)",
+    "3. wandb:      uvx auto-fetches from GitHub (no install, needs WANDB_API_KEY)",
     "4. Set env:    export WANDB_API_KEY='your-key' in ~/.bashrc or ~/.zshrc"
   ],
   "mcpServers": {
@@ -12,7 +12,8 @@
       "_usage": "@paper-fetcher → search arXiv preprints",
       "_install": "uv tool install arxiv-mcp-server",
       "type": "stdio",
-      "command": "arxiv-mcp-server"
+      "command": "uvx",
+      "args": ["arxiv-mcp-server"]
     },
     "context7": {
       "_usage": "All agents → library documentation (PyTorch, HuggingFace, PyG, RDKit, etc.)",
@@ -23,10 +24,10 @@
     },
     "wandb": {
       "_usage": "@experiment-fetcher → query experiment metrics and runs",
-      "_install": "uvx auto-fetches, needs WANDB_API_KEY env var",
+      "_install": "uvx auto-fetches from GitHub, needs WANDB_API_KEY env var",
       "type": "stdio",
       "command": "uvx",
-      "args": ["wandb-mcp-server"],
+      "args": ["--from", "git+https://github.com/wandb/wandb-mcp-server", "wandb_mcp_server"],
       "env": {
         "WANDB_API_KEY": "${WANDB_API_KEY}"
       }

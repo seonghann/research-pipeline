@@ -6,7 +6,7 @@
       "_usage": "@experiment-fetcher → project experiment metrics",
       "type": "stdio",
       "command": "uvx",
-      "args": ["wandb-mcp-server"],
+      "args": ["--from", "git+https://github.com/wandb/wandb-mcp-server", "wandb_mcp_server"],
       "env": {
         "WANDB_API_KEY": "${WANDB_API_KEY}",
         "WANDB_ENTITY": "YOUR_ENTITY",
