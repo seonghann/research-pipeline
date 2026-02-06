@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/claude-mcp-config",
+  "_comment": "PROJECT MCP CONFIG — project-specific experiment tracking",
+  "mcpServers": {
+    "wandb": {
+      "_usage": "@experiment-fetcher → project experiment metrics",
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["wandb-mcp-server"],
+      "env": {
+        "WANDB_API_KEY": "${WANDB_API_KEY}",
+        "WANDB_ENTITY": "YOUR_ENTITY",
+        "WANDB_PROJECT": "YOUR_PROJECT"
+      }
+    }
+  }
+}
