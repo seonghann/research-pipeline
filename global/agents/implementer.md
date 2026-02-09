@@ -20,8 +20,17 @@ Task("Implement: <progress log path or task description>")
 5. Build ordered step queue from 2.1
 
 If pre-report has no concrete steps (vague plan):
-→ STOP. Report: "Plan too vague for implementation. Needs concrete steps."
-→ Suggest: return to discuss phase or revise pre-report.
+→ STOP. Return structured output:
+  ```
+  ## Implementation Blocked — Vague Plan
+  Pre-report: <path>
+  Missing: Section 2.1 lacks concrete steps.
+  Needed:
+    - Step-by-step plan with specific files/functions to modify
+    - Expected input/output for each step
+  ```
+→ Do NOT attempt to implement without concrete steps.
+→ The main session will revise the pre-report and re-invoke.
 
 ### 2. Execute Steps Sequentially
 
@@ -77,11 +86,16 @@ HARD STOP. Do not proceed.
 2. Create diagnostic analyze script:
    → analyze/YYMMDD_impl_fail_<slug>.py
    → Document: what was attempted, what failed, diagnostic output
-3. Present three options to researcher:
-   a) Retry  — fix the issue in this step, re-check gates
-   b) Skip   — mark step as skipped, continue to next (researcher must approve)
-   c) Abort  — stop implementation, preserve current state
-   d) Debug  — invoke /debug for systematic investigation
+3. Return structured failure report (main session will present options to researcher):
+   ```
+   ## Gate Failure at Step <N>
+   Gate: <which gate failed>
+   Error: <specific error message>
+   Step: <what was being attempted>
+   Diagnostic: analyze/YYMMDD_impl_fail_<slug>.py
+   Steps completed before failure: <list>
+   Recommendation: retry / debug / abort
+   ```
 ```
 
 ### 4. Result Assessment (DO NOT SKIP)

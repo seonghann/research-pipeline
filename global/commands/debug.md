@@ -9,10 +9,25 @@ Systematically investigate and resolve a bug or failure.
 
 ## Behavior
 
-**Delegate to `@debugger` agent:**
+Delegate to `@debugger` agent. **The agent has no conversation context**,
+so you MUST enrich the Task prompt with everything needed to reproduce and investigate.
 
+**Task prompt must include:**
+- Problem description (what's wrong, when it happens)
+- Error messages or stack traces from conversation
+- What was being done when the problem occurred (impl step, test run, etc.)
+- Related file paths and line numbers discussed
+- What has already been tried or ruled out in conversation
+
+**Example:**
 ```
-Task("Debug: <problem description>")
+Task("Debug: training 3 epoch 후 loss가 NaN으로 발산.
+  Error: RuntimeError at src/model/loss.py:42 — log(0) 발생.
+  상황: /impl 중 Phase 3 step 2에서 발견.
+  관련 파일: src/model/loss.py (contrastive_loss 함수),
+            src/data/sampler.py (negative sampling).
+  이미 확인: learning rate는 정상 (1e-4), gradient clipping 적용됨.
+  의심: negative sample이 positive와 동일할 때 distance=0 케이스.")
 ```
 
 The debugger agent will:

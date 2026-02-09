@@ -12,10 +12,23 @@ a pre-report (sections 1-2) but no post-report (sections 3-4).
 
 ## Behavior
 
-**Delegate to `@implementer` agent:**
+Delegate to `@implementer` agent. **The agent has no conversation context**,
+so you MUST enrich the Task prompt with analysis conclusions and discussion insights.
 
+**Task prompt must include:**
+- Progress log path (primary reference)
+- Key analysis conclusions from the analyze phase (ADOPT decisions and evidence)
+- Specific design decisions made during discussion
+- Known constraints or edge cases raised in conversation
+- Relevant analyze script paths that validated the approach
+
+**Example:**
 ```
-Task("Implement: <progress log path>")
+Task("Implement: docs/progress/260208_attention_fix.md
+  분석 결론: padding token의 all-zero input이 softmax에서 uniform dist를 만들고,
+  이게 downstream에서 zero-division 유발 (analyze/260208_softmax_zero.py에서 확인).
+  합의된 접근: attention_mask를 -inf로 채우는 방식 적용.
+  주의사항: 기존 inference pipeline에서 mask format이 bool이므로 변환 필요.")
 ```
 
 The implementer agent will:

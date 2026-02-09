@@ -19,8 +19,14 @@ Read the progress log and extract:
 | Section 2.4 (Assumptions & Risks) | What could go wrong |
 
 If verification plan is vague or missing:
-→ Report: "Verification criteria insufficient."
-→ Still proceed with what CAN be verified (tests, code quality, integrity gates).
+→ Proceed with what CAN be verified (tests, code quality, integrity gates).
+→ In output, explicitly list what was NOT verified due to missing criteria:
+  ```
+  ⚠ Verification criteria insufficient in section 2.3.
+  Verified: integrity gates, test suite, code quality.
+  NOT verified (missing criteria): [specific items from plan that lacked measurable thresholds].
+  Researcher may want to add specific metrics to section 2.3 and re-run /verify.
+  ```
 
 ### 2. Integrity Gates (NON-NEGOTIABLE — run FIRST)
 

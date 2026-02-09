@@ -16,8 +16,12 @@ Parse the request into:
 - **What would be conclusive** — define success/failure criteria UPFRONT
 
 If the question is vague:
-→ Ask max 2 clarifying questions before proceeding.
-→ Example: "CA stereo 확인" is vague. "backbone CA의 CIP assignment가 non-GLY에서 100% S인지 확인" is concrete.
+→ Read src/, analyze/, progress logs to infer the specific intent.
+→ If still unclear after file exploration, state what's ambiguous in your output
+  and RETURN. Do NOT guess. The main session will re-invoke with more context.
+→ Example of vague vs concrete:
+  "CA stereo 확인" → vague.
+  "backbone CA의 CIP assignment가 non-GLY에서 100% S인지 확인" → concrete.
 
 ### 2. Read Relevant Source Code
 

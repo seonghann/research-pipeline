@@ -70,8 +70,17 @@ import sys
 - Exits non-zero on failure
 
 **If cannot create repro:**
-→ STOP. Ask researcher for specific information needed (max 3 questions).
-→ Do NOT proceed to hypotheses without repro.
+→ STOP. Do NOT proceed to hypotheses without repro.
+→ Return structured output explaining what's missing:
+  ```
+  ## Repro Failed — Missing Information
+  Attempted: <what was tried>
+  Blocked by: <specific reason repro couldn't be created>
+  Needed to proceed:
+    1. <specific info/file/data needed>
+    2. <specific info/file/data needed>
+  ```
+→ The main session will provide clarification and re-invoke.
 
 ### 2. Hypothesis Loop (max 5 iterations)
 
