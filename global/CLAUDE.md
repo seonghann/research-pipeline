@@ -322,6 +322,74 @@ progress logs and documentation.
 
 This enables both human navigation and Claude Code context retrieval.
 
+### 링크는 정리 판단의 근거다 — 쓰기 전에 검사하라
+
+The convention above is only worth having if it is CHECKED. Two failures follow from not
+checking, and both were met in practice.
+
+**★ 링크 없는 로그는 "안 쓰이는 로그"처럼 보인다.** An archiving or tidy-up pass acts on
+"nobody references this", so a log that is merely MISSING its links reads as dead work and gets
+buried. Before deciding anything is superseded, look at the link state first — and treat
+"in-degree 0" as *a question*, not an answer. In one clean-up, three of the six logs with no
+links at all turned out to be the core documents of a live line of work.
+
+**★★ 링크를 자동으로 손대는 도구는 그래프 지표를 전후로 비교하라.** A link rewriter is editing
+the evidence that later decisions rest on, so it has to be measured, not trusted:
+
+- Run it `--dry-run` first and read the COUNT. A number far larger than expected means it is
+  matching things it should not: a run that claimed 246 missing links was, in fact, re-wrapping
+  238 links that already existed and adding 8 real ones.
+- Never match a bare filename with a lookbehind for `[[`. A link may carry a path
+  (`[[docs/progress/260411_x]]`), the lookbehind sees only the two characters before the stem,
+  and the result is `[[docs/progress/[[260411_x]]` — which no parser can read. Mask every
+  existing `[[...]]` span before substituting.
+- Compare edge count and connected-set size before and after. When the above happened, edges
+  fell 325 → 41 and the connected set 167 → 37, and the collapse was first blamed on an
+  UNRELATED archive step that had run just before. A metric in front of you settles that in
+  seconds; without one it is a wrong diagnosis.
+
+### 지식그래프로 읽어라 — 로그 더미가 아니라 구조로
+
+The wiki-links are not decoration; they are a graph, and it is the graph that tells you what the
+project actually did. Build it and read it before summarising, archiving, or claiming a line of
+work is finished.
+
+**무엇을 세는가.** Parse every `[[...]]` in the progress logs. Log→log links form the graph;
+links to analyse scripts, memories and notes say what a log DEPENDS on and are counted
+separately. Then:
+
+- **connected components = 줄기(threads).** A component is the set of logs that cite one
+  another, i.e. the logs about one question. In practice these align with the project's phases
+  almost exactly, which is what makes a per-thread narrative honest rather than imposed.
+- **in-degree = 얼마나 자주 되돌아왔는가**, not importance.
+- **메모리로 승격된 결론** = already summarised; that is the right test for "can this log be
+  folded into a summary".
+
+**⚠ 허브만 요약하는 방식은 대개 실패한다.** The obvious move — rank by in-degree, summarise the
+top — quietly selects for AGE: the oldest logs have had the most time to be cited. Measured once:
+max in-degree 8, top-20 carrying only 31 % of all incoming links, and every top-ranked log from
+the project's first month. Ranking that way keeps the scaffolding and drops the current work.
+**Check the concentration before trusting the hubs**; if it is flat, cut by component instead.
+
+**★ 줄기는 날짜로 갈리지 않는다.** A thread can hold both dead and live material at once — one
+here mixed an architecture that was later deleted with the loss functions the model still trains
+on, interleaved by date. A date-range sweep would have buried the live half. Classify by what
+each log is ABOUT and cross-check against what current code and memories still reference.
+
+**장기기록은 스크립트로 생성하라.** Derive the structure (threads, dates, promoted conclusions)
+mechanically and keep the hand-written narrative between explicit markers, so re-running refreshes
+the facts without overwriting the story. A hand-maintained history goes stale; a generated
+skeleton with preserved prose does not.
+
+**상태를 상시로 보이게 하라.** Keep the counts — logs, links, connected set, orphans, archived —
+somewhere glanceable, **with the delta since the last run**. That delta is what catches a tool
+that silently damages the graph; see the warning above.
+
+**★ 아카이브는 검증한 뒤에 지운다.** Archiving preserves a file only if the archive is proven
+readable: read every file back OUT of the tar and compare hashes before removing anything.
+"the tar command exited 0" is not evidence. And hold back any file still referenced by live
+work — a date-based sweep does not know that a six-month-old script is still imported.
+
 ---
 
 ## Compaction
