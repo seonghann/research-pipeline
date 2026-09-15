@@ -1,0 +1,5 @@
+# Prompts preserve the user's ability to explicitly authorize these operations.
+# These prefix rules are not a complete command firewall; sandbox policy still applies.
+prefix_rule(pattern=["git", "push"], decision="prompt", justification="Push requires explicit user authorization.")
+prefix_rule(pattern=["rm", "-rf"], decision="prompt", justification="Destructive cleanup requires explicit user authorization.")
+prefix_rule(pattern=["sudo"], decision="prompt", justification="Privilege escalation requires explicit user authorization.")

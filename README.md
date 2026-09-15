@@ -1,8 +1,8 @@
-# Research Pipeline for Claude Code
+# Research Pipeline for Codex and Claude Code
 
-Claude Code 기반 AI 연구 워크플로우 자동화 셋업.
+Codex와 Claude Code에서 같은 AI 연구 워크플로우를 재현하는 셋업.
 
-클라우드 서버에서 clone → `setup.sh` 실행 → 바로 사용.
+클라우드 서버에서 clone → Codex는 `setup-codex.sh`, Claude Code는 `setup.sh` 실행 → 바로 사용.
 
 ## Philosophy
 
@@ -16,7 +16,72 @@ discuss (사람) → /go "task" (자동) → checkpoint에서만 판단 → 여�
 - **Checkpoint 패턴**: 각 phase 완료 시 사람이 y/n/edit 결정
 - **Context 누적**: `analyze/*.py` + `docs/progress/*.md` + git commit = 영구 기록
 
-## Quick Start
+## Codex Quick Start
+
+macOS와 Linux 서버 모두 같은 저장소를 사용한다. Codex CLI가 없는 서버에서는
+먼저 공식 설치 프로그램을 실행한다.
+
+```bash
+curl -fsSL https://chatgpt.com/codex/install.sh | sh
+codex login
+
+git clone https://github.com/seonghann/research-pipeline.git ~/research-pipeline
+cd ~/research-pipeline
+./setup-codex.sh install
+./setup-codex.sh adopt ~/projects/my-project
+
+cd ~/projects/my-project
+codex
+```
+
+새 프로젝트는 다음과 같이 초기화한다.
+
+```bash
+./setup-codex.sh init ~/projects/my-project MyProject
+```
+
+Codex 설치기는 다음 항목을 배포한다.
+
+| File | Purpose |
+|------|---------|
+| `~/.codex/AGENTS.md` | 전 프로젝트 공통 연구 규칙 |
+| `~/.agents/skills/source-command-*` | 10개 연구 워크플로우 스킬 |
+| `~/.codex/agents/*.toml` | 8개 전문 subagent 역할 |
+| `~/.codex/rules/research-pipeline.rules` | push, 삭제, sudo 승인 경계 |
+| `~/.codex/config.toml` | 기존 설정을 보존하며 누락된 MCP와 문서 한도 병합 |
+
+기존 파일을 변경할 때는
+`~/.codex/migration-backups/<UTC timestamp>/`에 고유 백업을 만든다. 반복 실행은
+내용이 같으면 아무것도 덮어쓰지 않는다. W&B 키의 값은 저장하지 않고
+`WANDB_API_KEY` 환경변수 이름만 설정에 기록한다.
+
+연구 명령은 Codex 고유 slash command와 충돌하지 않도록 스킬 이름으로 호출한다.
+
+```text
+$source-command-go
+$source-command-analyze
+$source-command-impl
+$source-command-verify
+$source-command-status   # Codex 내장 /status와 구분
+```
+
+생성된 `codex/` 파일은 `global/`의 Claude 자산에서 만들어진다. 원본 명령이나
+에이전트를 바꾼 뒤 다음을 실행해 Codex 배포본을 갱신한다.
+
+```bash
+./setup-codex.sh generate
+```
+
+### Remote GPU server
+
+8-GPU 서버에서는 서버에 Codex CLI와 이 설정을 설치하고, 장시간 작업은 기존처럼
+별도의 이름 있는 `tmux` 세션에서 실행한다. Codex 작업 기록과 학습 프로세스의
+수명은 별개이므로 progress log에 host, commit, environment, GPU IDs, tmux session,
+명령, log와 checkpoint 경로를 남긴다. 맥 앱의 **Settings > Connections**에서
+`~/.ssh/config`의 구체적인 host alias를 추가하면 같은 서버 프로젝트를 앱에서도
+열 수 있다.
+
+## Claude Code Quick Start
 
 ```bash
 # 1. Clone
