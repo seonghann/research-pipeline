@@ -37,12 +37,17 @@ The repository has newer graph/archive guidance than the imported global instruc
 - Isolated installer tests: 3 passed, 0 failed. Skill validation: 10 passed, 0 failed.
 - `codex --strict-config doctor`: 21 checks OK, 0 failed. One optional warning remains because
   `WANDB_API_KEY` was not set in the prior Claude configuration or current shell.
-- Active B200 host resolved as `nhn_dmrl_ts` (`DMRL-260615`). Its pipeline checkout is clean;
-  Codex CLI was not installed at discovery time.
+- Active B200 host resolved as `nhn_dmrl_ts` (`DMRL-260615`). Its pipeline checkout was clean
+  and was fast-forwarded to this migration. Official standalone Codex CLI 0.154.0, 10 skills,
+  8 agents and the DMRL project guidance were installed. Backup:
+  `~/.codex/migration-backups/20260915T082613.533926Z/`.
+- Server validation: config parsed, standalone runtime and HTTPS reachability passed. Interactive
+  ChatGPT authentication remains user-bound; WebSocket was unavailable but HTTPS fallback was
+  reachable. `WANDB_API_KEY` is also unset on both hosts.
 
 ## Conclusion
 
-The local workflow is migrated and reproducible from this repository. Claude assets remain
-available. Remote completion requires installing/authenticating Codex on the selected server,
-pulling this commit, running `setup-codex.sh install`, and adopting its DMRL checkout. Long jobs
-remain independent named tmux processes whose launch metadata belongs in progress logs.
+The local and active B200 workflows are migrated and reproducible from this repository. Claude
+assets remain available. The server requires one user-bound ChatGPT device login before its first
+Codex session. Long jobs remain independent named tmux processes whose launch metadata belongs in
+progress logs.
