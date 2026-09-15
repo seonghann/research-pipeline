@@ -41,13 +41,14 @@ The repository has newer graph/archive guidance than the imported global instruc
   and was fast-forwarded to this migration. Official standalone Codex CLI 0.154.0, 10 skills,
   8 agents and the DMRL project guidance were installed. Backup:
   `~/.codex/migration-backups/20260915T082613.533926Z/`.
-- Server validation: config parsed, standalone runtime and HTTPS reachability passed. Interactive
-  ChatGPT authentication remains user-bound; WebSocket was unavailable but HTTPS fallback was
-  reachable. `WANDB_API_KEY` is also unset on both hosts.
+- Server validation after user device authorization: ChatGPT login, strict config, standalone
+  runtime, WebSocket and HTTPS reachability all passed; 18 checks OK and 0 failed. The server has
+  a W&B netrc credential, but `WANDB_API_KEY` is not exported, so Codex reports the W&B MCP as an
+  optional warning. The variable is also unset locally.
 
 ## Conclusion
 
-The local and active B200 workflows are migrated and reproducible from this repository. Claude
-assets remain available. The server requires one user-bound ChatGPT device login before its first
-Codex session. Long jobs remain independent named tmux processes whose launch metadata belongs in
-progress logs.
+The local and active B200 workflows are migrated, authenticated and reproducible from this
+repository. Claude assets remain available. Long jobs remain independent named tmux processes
+whose launch metadata belongs in progress logs. Adding `nhn_dmrl_ts` as a desktop SSH connection
+is a user-interface step; it is not yet present in the desktop app's saved project list.
